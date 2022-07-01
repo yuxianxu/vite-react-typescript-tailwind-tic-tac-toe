@@ -1,7 +1,7 @@
 import Square from './Square';
 import { useState } from 'react';
 
-const INITIAL_GAME_STATE = ['x', 'x', 'o', 'o', '', '', '', '', ''];
+const INITIAL_GAME_STATE = ['X', 'X', 'O', 'O', '', '', '', '', ''];
 
 function Game() {
   const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
