@@ -1,7 +1,12 @@
 import Square from './Square';
 import { useEffect, useState } from 'react';
 
+type Scores = {
+  [key: string]: number;
+};
+
 const INITIAL_GAME_STATE = ['', '', '', '', '', '', '', '', ''];
+const INITIAL_SCORES: Scores = { X: 0, O: 0 };
 const WINNING_COMBOS = [
   [0, 1, 2],
   [3, 4, 5],
@@ -16,11 +21,19 @@ const WINNING_COMBOS = [
 function Game() {
   const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
   const [currentPlayer, setCurrentPlayer] = useState('X');
+  const [scores, setScores] = useState(INITIAL_SCORES);
 
   useEffect(() => {
-    // if (gameState === INITIAL_GAME_STATE) {
-    //   return;
-    // }
+    const storedScores = localStorage.getItem('scores');
+    if (storedScores) {
+      setScores(JSON.parse(storedScores));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (gameState === INITIAL_GAME_STATE) {
+      return;
+    }
 
     checkForWinner();
   }, [gameState]);
@@ -29,6 +42,13 @@ function Game() {
 
   const handleWin = () => {
     window.alert(`Congrats player ${currentPlayer}! You are the winner!`);
+
+    const newPlayerScore = scores[currentPlayer] + 1;
+    const newScores = { ...scores };
+    newScores[currentPlayer] = newPlayerScore;
+    setScores(newScores);
+    localStorage.setItem('scores', JSON.stringify(newScores));
+
     resetBoard();
   };
 
@@ -54,7 +74,6 @@ function Game() {
         roundWon = true;
         break;
       }
-
     }
     if (roundWon) {
       setTimeout(() => handleWin(), 500);
@@ -101,8 +120,18 @@ function Game() {
             />
           ))}
         </div>
+        <div className="mx-auto w-96 text-2xl text-serif">
+          <p className="text-white mt-5">
+            Next Player: <span>{currentPlayer}</span>
+          </p>
+          <p className="text-white mt-5">
+            Player X wins: <span>{scores['X']}</span>
+          </p>
+          <p className="text-white mt-5">
+            Player O wins: <span>{scores['O']}</span>
+          </p>
+        </div>
       </div>
-      <div>Scores Goes Here</div>
     </div>
   );
 }
