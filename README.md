@@ -2,7 +2,7 @@
 
 ## About
 
-- Built in React, with Typescript, Tailwind and the blazingly fast Vite build tool. 
+- Built in React, with Typescript, Tailwind CSS and the blazingly fast Vite build tool. 
 
 ## Live
 
